@@ -36,5 +36,13 @@ var _APPROUTES = [
                 }
             });
         }
+    },
+    {
+        name: 'loadfriend',
+        path: '/loadfriend/:userID',
+        async(routeTo: any, routeFrom: any, resolve: any, reject: any) {
+            reject();
+            loadFriend(routeTo.params.userID);
+        }
     }
 ];

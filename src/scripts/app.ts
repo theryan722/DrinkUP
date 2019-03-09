@@ -35,6 +35,7 @@ function refreshDrinkLog() {
                 sip: drink.data().sip
             });
             $$('#drinkloglist').append(fritem);
+            console.log(convertTimestampToDate(drink.data().timestamp));
         });
         if (first) {
             $$('#drinkloglist').html('<img src="img/empty.svg" alt="No drinks" class="backgroundsvg">');
@@ -97,6 +98,30 @@ function displayAddFriendDialog() {
                     return;
                 }
             });
+        }
+    });
+}
+
+function loadFriend(userid: string) {
+    app.popup.close();
+    app.popup.open()
+    mainFirebase.firestore().collection('users').doc(userid).collection('drinks').orderBy('timestamp', 'desc').get().then(function (drinks: any) {
+        let first = true;
+        drinks.forEach(function (drink: any) {
+            if (first) {
+                first = false;
+                $$('#frienddrinklog').html('');
+            }
+            //@ts-ignore
+            let fritem: any = nunjucks.render('drinklogitemtemplate.html', {
+                timestamp: formatTimeStamp(drink.data().timestamp.toMillis()),
+                sip: drink.data().sip
+            });
+            $$('#frienddrinklog').append(fritem);
+        });
+        if (first) {
+            $$('#frienddrinklog').html('<img src="img/nofriends.svg" alt="No friends" class="backgroundsvg">');
+            $$('#frienddrinklog').append('<center><p>You don\'t have any friends. Why not <a onclick="javascript:displayAddFriendDialog();">add</a> some?</p></center>');
         }
     });
 }

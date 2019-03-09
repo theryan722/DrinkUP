@@ -43,3 +43,7 @@ function formatTimeStamp(time: any, format = 'full') {
     }
     return res;
 }
+
+function convertTimestampToDate(timestamp: any): string {
+   return timestamp.toDate().getFullYear() + '-' + timestamp.toDate().getMonth() + '-' + timestamp.toDate().getDate();
+}
