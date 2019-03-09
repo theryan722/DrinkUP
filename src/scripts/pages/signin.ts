@@ -7,6 +7,9 @@ onPageInit('signin', function () {
 });
 
 /* === Signin Yeti === */
+//This yeti is duct taped together
+//I heavily modified it a while ago to work in an old app, and I copied over that dumpster fire here
+//Source: https://codepen.io/dsenneff/details/2d338b0adf97472ebc5d473cf1fa910b
 
 function runAnimation() {
     let lemail = document.querySelector('input[name=signin_email]'),
