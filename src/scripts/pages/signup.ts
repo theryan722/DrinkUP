@@ -1,5 +1,5 @@
 function loadSignupPage() {
-    mainView.router.navigate('signup');
+    mainView.router.navigate('/signup');
 }
 
 function signupUser() {

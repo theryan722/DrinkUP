@@ -1,5 +1,5 @@
 function loadSignInPage() {
-    mainView.router.navigate('signin');
+    mainView.router.navigate('/signin');
 }
 
 onPageInit('signin', function () {
