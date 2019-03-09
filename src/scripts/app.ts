@@ -136,6 +136,7 @@ function loadFriend(userid: string) {
     app.popup.open('.popup-friend');
     mainFirebase.firestore().collection('users').doc(userid).get().then(function (uinfo: any) {
         $$('.popup_friend_title').html(uinfo.data().name + ' | ' + uinfo.data().username);
+        $$('.friend_yellbutton').attr('onclick', 'javascript:yellAtFriend(\'' + uinfo.id + '\');');
         mainFirebase.firestore().collection('drinks').where('userid', '==', userid).orderBy('timestamp', 'desc').get().then(function (drinks: any) {
             let first = true;
             let drinkcount: number = 0;
@@ -222,5 +223,17 @@ function sendNotification(userto: string, title: string, body = '') {
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         title: title,
         body: body
+    });
+}
+
+function yellAtFriend(userid: string) {
+    app.dialog.confirm('Are you sure you want to yell at your friend to drink more water?', 'Confirm Yell', function () {
+        app.dialog.prompt('Enter a message if any to yell at them', 'Yell Message', function (msg: string) {
+            sendNotification(userid, GlobalVars.Authentication.userInfo.name + ' yelled at you!', msg);
+            app.toast.show({text: 'You yelled at someone to drink more water!'});
+        }, function () {
+            sendNotification(userid, GlobalVars.Authentication.userInfo.name + ' yelled at you!', 'What are you doing?! Drink some water!');
+            app.toast.show({text: 'You yelled at someone to drink more water!'});
+        })
     });
 }
