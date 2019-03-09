@@ -42,3 +42,24 @@ function refreshDrinkLog() {
         }
     });
 }
+
+function displayFriendsList() {
+    app.popup.open('.popup-friends');
+    refreshFriendsList();
+}
+
+function refreshFriendsList() {
+    mainFirebase.firestore().collection('users').doc(mainFirebase.auth().currentUser.uid).collection('friends').orderBy('username', 'desc').get().then(function (friends: any){
+        let first = true;
+        friends.forEach(function (friend: any) {
+           if (first) {
+               first = false;
+               $$('#friendslist').html('<img src="img/friendship.svg" alt="Drinks" class="backgroundsvg">');
+           } 
+        });
+        if (first) {
+            $$('#friendslist').html('<img src="img/nofriends.svg" alt="No friends" class="backgroundsvg">');
+            $$('#friendslist').append('<center><p>You don\'t have any friends. Why not <a onclick="javascript:displayAddFriendDialog();">add</a> some?</p></center>');
+        }
+    });
+}
