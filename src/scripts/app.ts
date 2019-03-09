@@ -103,24 +103,31 @@ function displayAddFriendDialog() {
 
 function loadFriend(userid: string) {
     app.popup.close();
-    app.popup.open()
-    mainFirebase.firestore().collection('users').doc(userid).collection('drinks').orderBy('timestamp', 'desc').get().then(function (drinks: any) {
-        let first = true;
-        drinks.forEach(function (drink: any) {
-            if (first) {
-                first = false;
-                $$('#frienddrinklog').html('');
-            }
-            //@ts-ignore
-            let fritem: any = nunjucks.render('drinklogitemtemplate.html', {
-                timestamp: formatTimeStamp(drink.data().timestamp.toMillis()),
-                sip: drink.data().sip
+    app.popup.open('.popup-friend');
+    mainFirebase.firestore().collection('users').doc(userid).get().then(function (uinfo: any) {
+        $$('.popup_friend_title').html(uinfo.data().name + ' | ' + uinfo.data().username);
+        mainFirebase.firestore().collection('drinks').where('userid', '==', userid).orderBy('timestamp', 'desc').get().then(function (drinks: any) {
+            let first = true;
+            let drinkcount = 0;
+            drinks.forEach(function (drink: any) {
+                if (first) {
+                    first = false;
+                    $$('#frienddrinklog').html('');
+                }
+                //@ts-ignore
+                let fritem: any = nunjucks.render('drinklogitemtemplate.html', {
+                    timestamp: formatTimeStamp(drink.data().timestamp.toMillis()),
+                    sip: drink.data().sip
+                });
+                if (!drink.data().sip) {
+                    drinkcount += 1;
+                }
+                $$('#frienddrinklog').append(fritem);
             });
-            $$('#frienddrinklog').append(fritem);
+            if (first) { 
+                $$('#frienddrinklog').html('<img src="img/empty.svg" alt="No drinks" class="backgroundsvg">');
+                $$('#frienddrinklog').append('<center><p>This friend hasn\'t drank anything yet. Go yell at them!</p></center>');
+            }
         });
-        if (first) {
-            $$('#frienddrinklog').html('<img src="img/nofriends.svg" alt="No friends" class="backgroundsvg">');
-            $$('#frienddrinklog').append('<center><p>You don\'t have any friends. Why not <a onclick="javascript:displayAddFriendDialog();">add</a> some?</p></center>');
-        }
     });
 }
