@@ -56,6 +56,13 @@ function refreshFriendsList() {
                 first = false;
                 $$('#friendslist').html('<img src="img/friendship.svg" alt="Drinks" class="backgroundsvg">');
             }
+            //@ts-ignore
+            let fritem: any = nunjucks.render('frienditemtemplate.html', {
+                name: friend.data().name,
+                username: friend.data().username,
+                userid: friend.id
+            });
+            $$('#friendslist').append(fritem);
         });
         if (first) {
             $$('#friendslist').html('<img src="img/nofriends.svg" alt="No friends" class="backgroundsvg">');

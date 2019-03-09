@@ -50,3 +50,14 @@ function authStateCheck(): Promise<any> {
     });
 
 }
+
+
+function signOutUser() {
+    app.dialog.confirm('Are you sure you want to sign out?', 'Confirm', function () {
+        mainFirebase.auth().signOut().then(function () {
+            location.reload();
+        }).catch(function (error: any) {
+            app.dialog.alert('There was an error attempting to sign out.', 'Error');
+        });
+    });
+}

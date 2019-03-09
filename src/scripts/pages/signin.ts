@@ -6,6 +6,16 @@ onPageInit('signin', function () {
     runAnimation();
 }, false);
 
+function signInUser() {
+    let tpreloader = app.dialog.preloader('Signing in...');
+    mainFirebase.auth().signInWithEmailAndPassword($$('input[name=signin_email]').val(), $$('input[name=signin_password]').val()).then(function () {
+        authStateCheck().then(function () {
+            tpreloader.close();
+            mainView.router.navigate('/');
+        });
+    });
+}
+
 /* === Signin Yeti === */
 //This yeti is duct taped together
 //I heavily modified it a while ago to work in an old app, and I copied over that dumpster fire here
@@ -135,7 +145,7 @@ function runAnimation() {
         var outerEarY = Math.cos(mouthAngle) * 5;
         var hairX = Math.cos(mouthAngle) * 6;
         var hairS = 1.2;
-//@ts-ignore
+        //@ts-ignore
         TweenMax.to(eyeL, 1, {
             x: -eyeLX,
             y: -eyeLY,
