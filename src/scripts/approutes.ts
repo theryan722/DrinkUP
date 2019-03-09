@@ -44,5 +44,11 @@ var _APPROUTES = [
             reject();
             loadFriend(routeTo.params.userID);
         }
+    },
+    {
+        name: 'about',
+        path: '/about',
+        url: 'pages/about.html',
+        beforeEnter: [routerCheckUserAuthentication]
     }
 ];
