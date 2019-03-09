@@ -7,10 +7,14 @@
     margin: auto;
 }
 
+.centersvghorizontal {
+    text-align: center;
+}
+
 .inputbutton {
-    position:absolute;
-    margin-top:-24px;
-    right:0;
+    position: absolute;
+    margin-top: -24px;
+    right: 0;
 }
 
 /* === Signin Yeti === */
@@ -42,4 +46,5 @@
     height: 100%;
     pointer-events: none;
 }
+
 /* === End Signin Yeti === */
