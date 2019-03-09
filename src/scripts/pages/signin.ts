@@ -4,7 +4,7 @@ function loadSignInPage() {
 
 onPageInit('signin', function () {
     runAnimation();
-});
+}, false);
 
 /* === Signin Yeti === */
 //This yeti is duct taped together
