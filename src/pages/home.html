@@ -1,4 +1,4 @@
-<div class="page" data-name="signup">
+<div class="page" data-name="home">
     <div class="navbar">
         <div class="navbar-inner sliding">
             <div class="title">Home</div>
@@ -9,10 +9,25 @@
             </div>
         </div>
     </div>
+    <div class="homepopups">
+
+    </div>
+    <div class="toolbar toolbar-bottom fab-morph-target toolbar-drink">
+        <div class="toolbar-inner">
+            <a onclick="javascript:takeADrink();" class="link fab-close">It was a whole glass (8oz)</a>
+            <a onclick="javascript:takeADrink(true);" class="link fab-close">It was just a sip</a>
+        </div>
+    </div>
+    <div class="fab fab-extended fab-center-bottom color-red fab-morph" data-morph-to=".toolbar-drink">
+        <a href="#">
+            <i class="fa fa-glass-whiskey"></i>
+            <div class="fab-text">I had a drink!</div>
+        </a>
+    </div>
     <div class="page-content">
         <img src="img/park.svg" alt="Hello!" class="backgroundsvg">
-        <center><p>Lets drink some water, shall we?</p></center>
-        <center><a onclick="javascript:takeADrink();" class="button button-round button-large button-raised color-green button-fill" style="max-width: 60%;">I had a drink!</a></center>
-        <center><a onclick="javascript:takeADrink(true);" class="button color-blue" style="max-width: 60%;">I just took a sip</a></center>
+        <center>
+            <p>Lets drink some water, shall we?</p>
+        </center>
     </div>
 </div>
