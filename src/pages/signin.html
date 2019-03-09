@@ -1,0 +1,39 @@
+<div class="page" data-name="login">
+    <!-- page-content has additional login-screen content -->
+    <div class="page-content login-screen-content">
+        <div class="login-screen-title">Sign in to Kounselus</div>
+        <!-- Login form -->
+        <form>
+            <div class="list">
+                <ul>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-title item-label">Email</div>
+                            <div class="item-input-wrap">
+                                <input type="email" name="login_email" placeholder="Email" required>
+                                <span class="input-clear-button"></span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-title item-label">Password</div>
+                            <div class="item-input-wrap">
+                                <input type="password" name="login_password" placeholder="Password" required>
+                                <span class="input-clear-button"></span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="list">
+                <ul>
+                    <li>
+                        <a onclick="javascript:loginUser();" class="button button-fill">Sign In</a>
+                    </li>
+                </ul>
+                <div class="block-footer">Don't have an account? <a onclick="javascript:loadSignupPage();" class="col button button-raised color-green" style="margin: auto; max-width: 200px;">Sign Up</a></div>
+            </div>
+        </form>
+    </div>
+</div>
