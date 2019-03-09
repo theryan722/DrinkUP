@@ -234,7 +234,6 @@ function runAnimation() {
     }
 
     function onEmailFocus(e: any) {
-        console.log('a')
         e.target.parentElement.classList.add("focusWithText");
         //@ts-ignore
         getCoord();

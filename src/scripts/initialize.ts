@@ -7,7 +7,7 @@ function initializeApp() {
 
 function initializeFirebase() {
     //@ts-ignore
-    firebase.initializeApp(mainFirebaseConfig);
+    mainFirebase = firebase.initializeApp(mainFirebaseConfig);
 }
 
 function initializeFramework7() {
