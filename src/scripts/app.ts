@@ -200,7 +200,8 @@ function refreshNotifications() {
             let fritem = nunjucks.render('notificationitemtemplate.html', {
                 title: notification.data().title,
                 body: notification.data().body,
-                timestamp: formatTimeStamp(notification.data().timestamp.toMillis())
+                timestamp: formatTimeStamp(notification.data().timestamp.toMillis()),
+                notificationid: notification.id
             });
             $$('#notificationslist').append(fritem);
         });
