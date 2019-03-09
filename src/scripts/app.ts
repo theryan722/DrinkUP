@@ -164,7 +164,7 @@ function loadFriend(userid: string) {
             });
             if (first) {
                 $$('#frienddrinklog').html('<img src="img/empty.svg" alt="No drinks" class="backgroundsvg">');
-                $$('#frienddrinklog').append('<center><p>This friend hasn\'t drank anything yet. Go yell at them!</p></center>');
+                $$('#frienddrinklog').append('<center><p>This friend hasn\'t drank anything yet. Go <a onclick="javascript:yellAtFriend(\'' + uinfo.id + '\');">yell at them!</a></p></center>');
             }
             drinkcount += sipscount / 3;
             let gaugevalue: number = drinkcount / 10;
