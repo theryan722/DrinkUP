@@ -35,7 +35,6 @@ function refreshDrinkLog() {
                 sip: drink.data().sip
             });
             $$('#drinkloglist').append(fritem);
-            console.log(convertTimestampToDate(drink.data().timestamp));
         });
         if (first) {
             $$('#drinkloglist').html('<img src="img/empty.svg" alt="No drinks" class="backgroundsvg">');
