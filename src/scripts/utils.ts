@@ -45,5 +45,5 @@ function formatTimeStamp(time: any, format = 'full') {
 }
 
 function convertTimestampToDate(timestamp: any): string {
-   return timestamp.toDate().getFullYear() + '-' + timestamp.toDate().getMonth() + '-' + timestamp.toDate().getDate();
+   return timestamp.getFullYear() + '-' + timestamp.getMonth() + '-' + timestamp.getDate();
 }

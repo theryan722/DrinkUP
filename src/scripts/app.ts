@@ -24,6 +24,9 @@ function viewDrinkLog() {
 function refreshDrinkLog() {
     mainFirebase.firestore().collection('drinks').where('userid', '==', mainFirebase.auth().currentUser.uid).orderBy('timestamp', 'desc').get().then(function (drinks: any) {
         let first = true;
+        let drinkcount: number = 0;
+        let sipscount: number = 0;
+        let todaydate = convertTimestampToDate(new Date());
         drinks.forEach(function (drink: any) {
             if (first) {
                 first = false;
@@ -34,12 +37,34 @@ function refreshDrinkLog() {
                 timestamp: formatTimeStamp(drink.data().timestamp.toMillis()),
                 sip: drink.data().sip
             });
+
+            let drinkdate = convertTimestampToDate(drink.data().timestamp.toDate());
+            if (drinkdate === todaydate) {
+                if (!drink.data().sip) {
+                    drinkcount += 1;
+                } else {
+                    sipscount += 1;
+                }
+            }
             $$('#drinkloglist').append(fritem);
         });
         if (first) {
             $$('#drinkloglist').html('<img src="img/empty.svg" alt="No drinks" class="backgroundsvg">');
             $$('#drinkloglist').append('<center><p>You haven\'t drank anything! Pick up a glass of water!!</p></center>');
         }
+        drinkcount += sipscount / 3;
+        let gaugevalue: number = drinkcount / 10;
+        if (gaugevalue > 1) {
+            gaugevalue = 1;
+        }
+        let drinkloggauge = app.gauge.create({
+            el: '.drinkloggauge',
+            type: 'semicircle',
+            value: gaugevalue,
+            borderColor: '#2196f3',
+            valueText: (gaugevalue * 10) + ' / 10',
+            labelText: 'Today\'s Progress'
+        });
     });
 }
 
@@ -124,7 +149,7 @@ function loadFriend(userid: string) {
                 }
                 $$('#frienddrinklog').append(fritem);
             });
-            if (first) { 
+            if (first) {
                 $$('#frienddrinklog').html('<img src="img/empty.svg" alt="No drinks" class="backgroundsvg">');
                 $$('#frienddrinklog').append('<center><p>This friend hasn\'t drank anything yet. Go yell at them!</p></center>');
             }
