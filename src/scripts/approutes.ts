@@ -18,5 +18,19 @@ var _APPROUTES = [
                 });
             }
         }
+    },
+    {
+        name: 'signup',
+        path: '/signup',
+        async(routeTo: any, routeFrom: any, resolve: any, reject: any) {
+            if (userIsLoggedIn()) {
+                reject();
+                mainView.router.navigate('/');
+            } else {
+                resolve({
+                    url: 'pages/signup.html'
+                });
+            }
+        }
     }
 ];
