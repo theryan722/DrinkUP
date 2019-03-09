@@ -33,6 +33,7 @@ function authStateCheck(): Promise<any> {
                     if (!GlobalVars.Authentication.initialCheck) {
                         mainFirebase.firestore().collection('users').doc(mainFirebase.auth().currentUser.uid).get().then(function (udoc: any) {
                             if (udoc.exists) {
+                                refreshFriendsListIDs();
                                 GlobalVars.Authentication.userInfo = udoc.data();
                                 GlobalVars.Authentication.initialCheck = true;
                                 updateUserInfoMenuDisplay();
@@ -48,9 +49,18 @@ function authStateCheck(): Promise<any> {
             });
         }
     });
-
 }
 
+function refreshFriendsListIDs() {
+    mainFirebase.firestore().collection('users').doc(mainFirebase.auth().currentUser.uid).collection('friends').get().then(function (friends: any) {
+        friends.forEach(function (friend: any) {
+            if (!GlobalVars.friendsList) {
+                GlobalVars.friendsList = [];
+            }
+            GlobalVars.friendsList.push(friend.id);
+        })
+    });
+}
 
 function signOutUser() {
     app.dialog.confirm('Are you sure you want to sign out?', 'Confirm', function () {

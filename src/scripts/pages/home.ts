@@ -18,4 +18,7 @@ function loadHomePopups() {
     app.request.get('reuse/friend_popup.html', function (data: string) {
         $$('.homepopups').append(data);
     });
+    app.request.get('reuse/notification_popup.html', function (data: string) {
+        $$('.homepopups').append(data);
+    });
 }

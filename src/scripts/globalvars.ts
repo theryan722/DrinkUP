@@ -11,5 +11,6 @@ var GlobalVars = {
         initialCheck: false,
         userIsLoggedIn: false,
         userInfo: <any> undefined
-    }
+    },
+    friendsList: <any> undefined
 };

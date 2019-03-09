@@ -1,0 +1,17 @@
+<li class="swipeout">
+    <div class="swipeout-content">
+        <a href="#" class="item-link item-content">
+            <div class="item-inner">
+                <div class="item-title-row">
+                    <div class="item-title">{{title}}</div>
+                    <div class="item-after">{{timestamp}}</div>
+                </div>
+                <div class="item-text">{{body}}</div>
+            </div>
+        </a>
+    </div>
+    <div class="swipeout-actions-right">
+        <a onclick="javascript:deleteNotification('{{notificationid}}');" data-confirm="Are you sure you want to delete this notification?"
+            class="swipeout-delete swipeout-overswipe">Delete</a>
+    </div>
+</li>

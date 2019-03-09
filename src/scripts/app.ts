@@ -7,6 +7,11 @@ function takeADrink(justasip: boolean = false) {
         username: GlobalVars.Authentication.userInfo.username,
         sip: justasip
     }).then(function () {
+        if (GlobalVars.friendsList) {
+            for (let key in GlobalVars.friendsList) {
+                sendNotification(GlobalVars.friendsList[key], GlobalVars.Authentication.userInfo.name + ' took a ' + (justasip ? 'sip!' : ' drink!'), (justasip ? 'It\'s just a sip, you can catch up.' : 'They took a whole drink, time to step your game up 💪'))
+            }
+        }
         if (justasip) {
             app.popup.open('.popup-drink_sip');
             runDrinkAnimation();
@@ -174,5 +179,48 @@ function loadFriend(userid: string) {
                 labelText: 'Today\'s Progress'
             });
         });
+    });
+}
+
+function displayNotifications() {
+    app.popup.open('.popup-notifications');
+    refreshNotifications();
+}
+
+function refreshNotifications() {
+    mainFirebase.firestore().collection('users').doc(mainFirebase.auth().currentUser.uid).collection('notifications').orderBy('timestamp', 'desc').get().then(function (notifications: any) {
+        let first = true;
+        notifications.forEach(function (notification: any) {
+            if (first) {
+                first = false;
+                $$('#notificationslist').html('');
+            }
+            //@ts-ignore
+            let fritem = nunjucks.render('notificationitemtemplate.html', {
+                title: notification.data().title,
+                body: notification.data().body,
+                timestamp: formatTimeStamp(notification.data().timestamp.toMillis())
+            });
+            $$('#notificationslist').append(fritem);
+        });
+        if (first) {
+            $$('#notificationslist').html('<img src="img/nonotifications.svg" alt="No notifications" class="backgroundsvg">');
+            $$('#notificationslist').append('<center><p>No notifications. You\'re all good!</p></center>');
+        }
+    });
+}
+
+function deleteNotification(notid: string) {
+    mainFirebase.firestore().collection('users').doc(mainFirebase.auth().currentUser.uid).collection('notifications').doc(notid).delete().then(function () {
+        //wait to see if we need to refresh notifications
+    });
+}
+
+function sendNotification(userto: string, title: string, body = '') {
+    mainFirebase.firestore().collection('users').doc(userto).collection('notifications').add({
+        //@ts-ignore
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        title: title,
+        body: body
     });
 }
