@@ -49,17 +49,47 @@ function displayFriendsList() {
 }
 
 function refreshFriendsList() {
-    mainFirebase.firestore().collection('users').doc(mainFirebase.auth().currentUser.uid).collection('friends').orderBy('username', 'desc').get().then(function (friends: any){
+    mainFirebase.firestore().collection('users').doc(mainFirebase.auth().currentUser.uid).collection('friends').orderBy('username', 'desc').get().then(function (friends: any) {
         let first = true;
         friends.forEach(function (friend: any) {
-           if (first) {
-               first = false;
-               $$('#friendslist').html('<img src="img/friendship.svg" alt="Drinks" class="backgroundsvg">');
-           } 
+            if (first) {
+                first = false;
+                $$('#friendslist').html('<img src="img/friendship.svg" alt="Drinks" class="backgroundsvg">');
+            }
         });
         if (first) {
             $$('#friendslist').html('<img src="img/nofriends.svg" alt="No friends" class="backgroundsvg">');
             $$('#friendslist').append('<center><p>You don\'t have any friends. Why not <a onclick="javascript:displayAddFriendDialog();">add</a> some?</p></center>');
+        }
+    });
+}
+
+function displayAddFriendDialog() {
+    app.dialog.prompt('Enter the username of your friend', 'Add Friend', function (username: string) {
+        if (username) {
+            checkIfUsernameExists(username).then(function (usernameexists: boolean) {
+                if (usernameexists) {
+                    mainFirebase.firestore().collection('users').where('username', '==', username).limit(1).get().then(function (users: any) {
+                        users.forEach(function (user: any) {
+                            mainFirebase.firestore().collection('users').doc(user.id).collection('friends').doc(mainFirebase.auth().currentUser.uid).set({
+                                name: GlobalVars.Authentication.userInfo.name,
+                                username: GlobalVars.Authentication.userInfo.username
+                            }).then(function () {
+                                mainFirebase.firestore().collection('users').doc(mainFirebase.auth().currentUser.uid).collection('friends').doc(user.id).set({
+                                    name: user.data().name,
+                                    username: user.data().username
+                                }).then(function () {
+                                    refreshFriendsList();
+                                    app.toast.show({ text: 'Successfully added new friend!' });
+                                });
+                            });
+                        });
+                    });
+                } else {
+                    app.toast.show({ text: 'A user with that username could not be found. Please try again.' });
+                    return;
+                }
+            });
         }
     });
 }
