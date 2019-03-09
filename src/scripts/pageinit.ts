@@ -10,3 +10,9 @@ function onPageInit(pagename: string, callback: any, initialonly = true) {
         }
     });
 }
+
+$$(document).on('page:init', function (e: any) {
+    if (app.device.desktop) {
+        $$('.mobilemenubutton').hide();
+    }
+});

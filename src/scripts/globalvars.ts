@@ -7,6 +7,7 @@ var mainFirebase: any;
 
 var GlobalVars = {
     Authentication: {
+        initialized: false,
         initialCheck: false,
         userIsLoggedIn: false,
         userInfo: <any> undefined

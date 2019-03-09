@@ -18,3 +18,35 @@ function checkIfUsernameExists(username: string): Promise<any> {
         });
     });
 }
+
+function authStateCheck(): Promise<any> {
+    return new Promise(function (resolve, reject) {
+        if (GlobalVars.Authentication.initialized) {
+            resolve(GlobalVars.Authentication.userIsLoggedIn);
+        } else {
+            GlobalVars.Authentication.initialized = true;
+            mainFirebase.auth().onAuthStateChanged(function (user: any) {
+                if (user) {
+                    applySkeletonTextEffect('.menu_account_name');
+                    applySkeletonTextEffect('.menu_account_username');
+                    GlobalVars.Authentication.userIsLoggedIn = true;
+                    if (!GlobalVars.Authentication.initialCheck) {
+                        mainFirebase.firestore().collection('users').doc(mainFirebase.auth().currentUser.uid).get().then(function (udoc: any) {
+                            if (udoc.exists) {
+                                GlobalVars.Authentication.userInfo = udoc.data();
+                                GlobalVars.Authentication.initialCheck = true;
+                                updateUserInfoMenuDisplay();
+                                resolve();
+                            }
+                        });
+                    }
+                } else {
+                    GlobalVars.Authentication.userIsLoggedIn = false;
+                    GlobalVars.Authentication.userInfo = undefined;
+                    resolve();
+                }
+            });
+        }
+    });
+
+}

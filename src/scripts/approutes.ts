@@ -9,28 +9,32 @@ var _APPROUTES = [
         name: 'signin',
         path: '/signin',
         async(routeTo: any, routeFrom: any, resolve: any, reject: any) {
-            if (userIsLoggedIn()) {
-                reject();
-                mainView.router.navigate('/');
-            } else {
-                resolve({
-                    url: 'pages/signin.html'
-                });
-            }
+            authStateCheck().then(function () {
+                if (userIsLoggedIn()) {
+                    reject();
+                    mainView.router.navigate('/');
+                } else {
+                    resolve({
+                        url: 'pages/signin.html'
+                    });
+                }
+            });
         }
     },
     {
         name: 'signup',
         path: '/signup',
         async(routeTo: any, routeFrom: any, resolve: any, reject: any) {
-            if (userIsLoggedIn()) {
-                reject();
-                mainView.router.navigate('/');
-            } else {
-                resolve({
-                    url: 'pages/signup.html'
-                });
-            }
+            authStateCheck().then(function () {
+                if (userIsLoggedIn()) {
+                    reject();
+                    mainView.router.navigate('/');
+                } else {
+                    resolve({
+                        url: 'pages/signup.html'
+                    });
+                }
+            });
         }
     }
 ];
